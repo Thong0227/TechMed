@@ -26,11 +26,10 @@ namespace TechMed.Areas.Admin.Models.Recruitment
         [StringLength(50, ErrorMessage = "Số lượng không quá 50 kí tự")]
         public string? Quantity { get; set; }
 
-        public Guid RecruitmentCateId { get; set; }
+        public Guid? RecruitmentCateId { get; set; }
         public RecruitmentCate? RecruitmentCate { get; set; }
 
-        public ICollection<RecruitmentTag> RecruitmentTags { get; set; }
+        public ICollection<RecruitmentTag>? RecruitmentTags { get; set; }
 
-        public List<Guid>? SelectedTags { get; set; }
     }
 }

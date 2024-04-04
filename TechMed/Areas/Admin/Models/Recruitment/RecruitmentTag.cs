@@ -1,4 +1,6 @@
-﻿namespace TechMed.Areas.Admin.Models.Recruitment
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TechMed.Areas.Admin.Models.Recruitment
 {
     public class RecruitmentTag
     {

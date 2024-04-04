@@ -1,0 +1,65 @@
+﻿@model TechMed.Areas.Admin.Models.Recruitment.Recruitment
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Edit Recruitment</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Salary"></label>
+        <input asp-for="Salary" class="form-control" />
+        <span asp-validation-for="Salary" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Content"></label>
+        <input asp-for="Content" class="form-control" />
+        <span asp-validation-for="Content" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Deadline"></label>
+        <input asp-for="Deadline" class="form-control" type="date" />
+        <span asp-validation-for="Deadline" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Quantity"></label>
+        <input asp-for="Quantity" class="form-control" />
+        <span asp-validation-for="Quantity" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="RecruitmentCateId"></label>
+        <select asp-for="RecruitmentCateId" class="form-control" asp-items="ViewBag.RecruitmentCates"></select>
+        <span asp-validation-for="RecruitmentCateId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Tags:</label>
+        <select asp-for="RecruitmentTags" class="form-control" asp-items="ViewBag.Tags" multiple></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+<a asp-action="Index">Back to List</a>
+
+

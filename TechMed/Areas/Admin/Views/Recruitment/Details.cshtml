@@ -1,0 +1,31 @@
+﻿@model TechMed.Areas.Admin.Models.Recruitment.Recruitment
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Recruitment Details</h1>
+
+<div>
+    <h4>Name: @Html.DisplayFor(model => model.Name)</h4>
+    <h4>Salary: @Html.DisplayFor(model => model.Salary)</h4>
+    <h4>Description: @Html.DisplayFor(model => model.Description)</h4>
+    <h4>Content: @Html.DisplayFor(model => model.Content)</h4>
+    <h4>Deadline: @Html.DisplayFor(model => model.Deadline)</h4>
+    <h4>Quantity: @Html.DisplayFor(model => model.Quantity)</h4>
+    <h4>Recruitment Category: @Html.DisplayFor(model => model.RecruitmentCate.Name)</h4>
+</div>
+
+<div>
+    <h4>Tags:</h4>
+    @foreach (var tag in Model.RecruitmentTags.Select(rt => rt.Tag))
+    {
+        <span>@tag.Name</span>
+    }
+</div>
+
+<p>
+    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+</p>

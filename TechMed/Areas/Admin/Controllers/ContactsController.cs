@@ -6,93 +6,92 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TechMed.Areas.Admin.Data;
-using TechMed.Areas.Admin.Models.Recruitment;
+using TechMed.Areas.Admin.Models;
 
 namespace TechMed.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class TagsController : Controller
+    public class ContactsController : Controller
     {
         private readonly AppDbContext _context;
 
-        public TagsController(AppDbContext context)
+        public ContactsController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: Admin/Tags
+        // GET: Admin/Contacts
         public async Task<IActionResult> Index()
         {
-              return _context.Tags != null ? 
-                          View(await _context.Tags.ToListAsync()) :
-                          Problem("Entity set 'AppDbContext.Tags'  is null.");
+              return _context.Contact != null ? 
+                          View(await _context.Contact.ToListAsync()) :
+                          Problem("Entity set 'AppDbContext.Contact'  is null.");
         }
 
-        // GET: Admin/Tags/Details/5
+        // GET: Admin/Contacts/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.Tags == null)
+            if (id == null || _context.Contact == null)
             {
                 return NotFound();
             }
 
-            var tag = await _context.Tags
+            var contact = await _context.Contact
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (tag == null)
+            if (contact == null)
             {
                 return NotFound();
             }
 
-            return View(tag);
+            return View(contact);
         }
 
-        // GET: Admin/Tags/Create
+        // GET: Admin/Contacts/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/Tags/Create
+        // POST: Admin/Contacts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Tag tag)
+        public async Task<IActionResult> Create([Bind("Id,Name,Email,Content")] Contact contact)
         {
             if (ModelState.IsValid)
             {
-                tag.Id = Guid.NewGuid();
-                _context.Add(tag);
+                _context.Add(contact);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(tag);
+            return View(contact);
         }
 
-        // GET: Admin/Tags/Edit/5
+        // GET: Admin/Contacts/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null || _context.Tags == null)
+            if (id == null || _context.Contact == null)
             {
                 return NotFound();
             }
 
-            var tag = await _context.Tags.FindAsync(id);
-            if (tag == null)
+            var contact = await _context.Contact.FindAsync(id);
+            if (contact == null)
             {
                 return NotFound();
             }
-            return View(tag);
+            return View(contact);
         }
 
-        // POST: Admin/Tags/Edit/5
+        // POST: Admin/Contacts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name")] Tag tag)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Email,Content")] Contact contact)
         {
-            if (id != tag.Id)
+            if (id != contact.Id)
             {
                 return NotFound();
             }
@@ -101,12 +100,12 @@ namespace TechMed.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(tag);
+                    _context.Update(contact);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TagExists(tag.Id))
+                    if (!ContactExists(contact.Id))
                     {
                         return NotFound();
                     }
@@ -117,49 +116,49 @@ namespace TechMed.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(tag);
+            return View(contact);
         }
 
-        // GET: Admin/Tags/Delete/5
+        // GET: Admin/Contacts/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _context.Tags == null)
+            if (id == null || _context.Contact == null)
             {
                 return NotFound();
             }
 
-            var tag = await _context.Tags
+            var contact = await _context.Contact
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (tag == null)
+            if (contact == null)
             {
                 return NotFound();
             }
 
-            return View(tag);
+            return View(contact);
         }
 
-        // POST: Admin/Tags/Delete/5
+        // POST: Admin/Contacts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Tags == null)
+            if (_context.Contact == null)
             {
-                return Problem("Entity set 'AppDbContext.Tags'  is null.");
+                return Problem("Entity set 'AppDbContext.Contact'  is null.");
             }
-            var tag = await _context.Tags.FindAsync(id);
-            if (tag != null)
+            var contact = await _context.Contact.FindAsync(id);
+            if (contact != null)
             {
-                _context.Tags.Remove(tag);
+                _context.Contact.Remove(contact);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TagExists(Guid id)
+        private bool ContactExists(Guid id)
         {
-          return (_context.Tags?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Contact?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

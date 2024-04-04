@@ -3,6 +3,7 @@ using TechMed.Areas.Admin.Models.News;
 using TechMed.Areas.Admin.Models.Recruitment;
 using TechMed.Areas.Admin.Models.Banner;
 using Microsoft.Extensions.Hosting;
+using TechMed.Areas.Admin.Models;
 
 namespace TechMed.Areas.Admin.Data
 {
@@ -19,26 +20,28 @@ namespace TechMed.Areas.Admin.Data
         public DbSet<TechMed.Areas.Admin.Models.Menu>? Menu { get; set; }
         public DbSet<TechMed.Areas.Admin.Models.Banner.Banner>? Banner { get; set; }
         public DbSet<TechMed.Areas.Admin.Models.Banner.BannerPosition>? BannerPosition { get; set; }
-        public DbSet<TechMed.Areas.Admin.Models.Recruitment.Recruitment>? Recruitment { get; set; }
-        public DbSet<TechMed.Areas.Admin.Models.Recruitment.Tag>? Tag { get; set; }
-        public DbSet<TechMed.Areas.Admin.Models.Recruitment.RecruitmentTag>? RecruitmentTag { get; set; }
+        public DbSet<TechMed.Areas.Admin.Models.Recruitment.Recruitment>? Recruitments { get; set; }
+        public DbSet<TechMed.Areas.Admin.Models.Recruitment.Tag>? Tags { get; set; }
+        public DbSet<TechMed.Areas.Admin.Models.Recruitment.RecruitmentTag>? RecruitmentTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<RecruitmentTag>(entity =>
-            {
-                entity.HasKey(bp => new {bp.RecruitmentId,bp.TagId});
+            base.OnModelCreating(modelBuilder);
 
-                entity.HasOne(bp => bp.Recruitment)
-                .WithMany(b => b.RecruitmentTags)
-                .HasForeignKey(bp => bp.RecruitmentId)
-                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<RecruitmentTag>()
+                .HasKey(rt => new { rt.RecruitmentId, rt.TagId });
 
-                entity.HasOne(bp => bp.Tag)
-                .WithMany(b => b.RecruitmentTags)
-                .HasForeignKey(bp => bp.TagId)
-                .OnDelete(DeleteBehavior.NoAction);
-            });
+            modelBuilder.Entity<RecruitmentTag>()
+                .HasOne(rt => rt.Recruitment)
+                .WithMany(r => r.RecruitmentTags)
+                .HasForeignKey(rt => rt.RecruitmentId);
+
+            modelBuilder.Entity<RecruitmentTag>()
+                .HasOne(rt => rt.Tag)
+                .WithMany(t => t.RecruitmentTags)
+                .HasForeignKey(rt => rt.TagId);
         }
+
+        public DbSet<TechMed.Areas.Admin.Models.Contact>? Contact { get; set; }
     }
 }
