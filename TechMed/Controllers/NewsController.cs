@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TechMed.Areas.Admin.Data;
+using TechMed.Areas.Admin.Models.Banner;
 using TechMed.Areas.Admin.Models.News;
+using X.PagedList;
 
 namespace TechMed.Controllers
 {
@@ -20,10 +22,28 @@ namespace TechMed.Controllers
         }
 
         // GET: News
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            var appDbContext = _context.News.Include(n => n.NewsCategory);
-            return View(await appDbContext.ToListAsync());
+            if(_context.News != null)
+            {
+                int pageSize = 5; //SL phan tu tren 1 trang
+                int pageNumber = (page ?? 1);
+                var news = await _context.News
+                  .Include(n => n.NewsCategory)
+				  .OrderByDescending(n => n.CreatedDate)
+				  .ToListAsync();
+                IPagedList<News> newsPaging = news.ToPagedList(pageNumber, pageSize);
+
+                if (news != null)
+                {
+                    return View(newsPaging);
+                }
+                else
+                {
+                    return Problem("Entity set 'AppDbContext.News' is null.");
+                }
+            }
+            return View();
         }
 
         // GET: News/Details/5

@@ -17,14 +17,17 @@ namespace TechMed.Areas.Admin.Models.Banner
         public int Status { get; set; }
 
         [Required(ErrorMessage = "Vui lòng chọn ngày hiển thị.")]
-        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
 
-        [DataType(DataType.Date)]
         public DateTime? EndDate { get; set; }
 
-        [Required(ErrorMessage = "Vui lòng chọn vị trí banner hiển thị.")]
+		public int? Order { get; set; }
+
+		public string? Link { get; set; }
+
+		[Required(ErrorMessage = "Vui lòng chọn vị trí banner hiển thị.")]
         public Guid BannerPositionId { get; set; }
-        public BannerPosition BannerPosition { get; set; }
+        public BannerPosition? BannerPosition { get; set; }
+
     }
 }

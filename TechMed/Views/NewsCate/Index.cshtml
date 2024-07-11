@@ -1,0 +1,98 @@
+﻿@model X.PagedList.IPagedList<TechMed.Areas.Admin.Models.News.News>
+@using X.PagedList.Mvc.Core
+@{
+
+}
+
+<section class="bread-crumb">
+	<span class="crumb-border"></span>
+	<div class="container">
+		<div class="row">
+			<div class="col-12 a-left">
+				<ul class="breadcrumb">
+					<li class="home">
+						<a href="/">
+							<span>Trang chủ</span>
+						</a>
+						<span class="mr_lr">
+							&nbsp;<i class="fa fa-angle-right"></i>
+							&nbsp;
+						</span>
+					</li>
+					<li>
+						<a href="/News">
+							<span>Tin tức</span>
+						</a>
+						<span class="mr_lr">
+							&nbsp;<i class="fa fa-angle-right"></i>
+							&nbsp;
+						</span>
+					</li>
+					<li>
+						<strong>
+                            <span>@ViewBag.NewsCategoryName</span>
+						</strong>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="blogpage">
+    <div class="containers" itemscope itemtype="https://schema.org/Blog">
+        <meta itemprop="name" content="Tin tức">
+        <meta itemprop="description" content="">
+        <div class="wrap_background_aside margin-bottom-0">
+            <div class="section full_background_blog">
+                <div class="container">
+                    <div class="row">
+                        <partial name="_SidebarPartial" model="Model" />
+                        <div class="right-content margin-bottom-fix col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                            <section class="list-blogs blog-main listmain_blog">
+                                <div class="row row_blog_responsive">
+                                    @foreach (var item in Model)
+                                    {
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 itembb">
+                                            <div class="myblog">
+                                                <div class="blogwp">
+                                                    <a class="image-blog" asp-controller="News" asp-action="Details" asp-route-id="@item.Id"
+                                                       title="@Html.DisplayFor(modelItem => item.Title)">
+                                                        <img class="lazyload"
+                                                             src="@Html.DisplayFor(modelItem => item.Image)"
+                                                             alt="@Html.DisplayFor(modelItem => item.Title)">
+                                                    </a>
+
+                                                    <div class="content_blog">
+                                                        <h3>
+                                                            <a asp-controller="News" asp-action="Details" asp-route-id="@item.Id"
+                                                               title="@Html.DisplayFor(modelItem => item.Title)">
+                                                                @Html.DisplayFor(modelItem => item.Title)
+                                                            </a>
+                                                        </h3>
+
+                                                        <p class="justify">
+                                                            @Html.Raw(@item.Description)
+                                                            <a class="readmore" asp-controller="News" asp-action="Details" asp-route-id="@item.Id"
+                                                               title="Đọc tiếp">
+                                                                [Đọc tiếp]
+                                                            </a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                @* phaan trang*@
+                                <div class="text-xs-right pageinate-page-blog section">
+                                    @Html.PagedListPager(Model, page => Url.Action("Index", "NewsCate", new { id = @ViewBag.NewsCategoryId, page = page }))
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

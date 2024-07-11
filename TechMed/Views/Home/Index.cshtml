@@ -1,8 +1,278 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@inject TechMed.Service.BannerService BannerService;
+@inject TechMed.Service.NewsService NewsService;
+@{
+	ViewData["Title"] = "Home Page";
+	var bannerSection1 = BannerService.GetBannerByPositionCode("BANNER_SECTION1");
+	var bannerSection2 = BannerService.GetBannerByPositionCode("BANNER_SECTION2");
+	var bannerSection3 = BannerService.GetBannerByPositionCode("BANNER_SECTION3");
+	var bannerSection4 = BannerService.GetBannerByPositionCode("BANNER_SECTION4");
+	var homeNews = NewsService.GetHomeNews();
+	var hotNews = NewsService.GetHotNews(2);
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1 class="d-none">Techmedcom - </h1>
+@if (BannerService != null)
+{
+	@if (bannerSection1 != null)
+	{
+		<section class="awe-section-1">
+			<section class="section_slider">
+				<div class="swiper-container home-slider">
+					<div class="swiper-wrapper">
+						@foreach (var banner in bannerSection1)
+						{
+							<div class="items swiper-slide">
+								<a href="@banner.Link">
+									<img class="lazyload"
+										 src="@banner.ImageUrl"
+										 alt="Slider 2" />
+								</a>
+							</div>
+						}
+					</div>
+					<div class="swiper-pagination"></div>
+				</div>
+			</section>
+		</section>
+	}
+}
+<section class="awe-section-2">
+	<div id="counters-section" class="section_counter pad50">
+		<div class="container">
+			<div class="counters">
+				<div class="item">
+					<h4>
+						<span id="counterPersonnel" class="counter" data-animate-value="1000"></span>+
+					</h4>
+					<p>Nhân sự</p>
+				</div>
+				<div class="item">
+					<h4>
+						<span id="counterTradeMark" class="counter" data-animate-value="5"></span>+
+					</h4>
+					<p>Thương hiệu</p>
+				</div>
+				<div class="item">
+					<h4>
+						<span id="counterBranch" class="counter" data-animate-value="10"></span>+
+					</h4>
+					<p>Chi nhánh </p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 col-12">
+					<div class="content-co">
+						<img src="//bizweb.dktcdn.net/100/474/205/themes/928207/assets/quotation-marks.png?1703129650401"
+							 alt="">
+						<span>Với mong muốn đem đến</span>
+						những sản phẩm Dược phẩm Việt và nâng cao trải nghiệm tích cực của khách hàng, 
+						Techmedcom hướng tới mục tiêu xây dựng đơn vị có quy mô trên 1000 nhân sự, đồng thời sở hữu nhiều thương 
+						hiệu đình đám của Việt Nam. Techmedcom luôn chú trọng đến công tác đào tạo và phát triển nguồn nhân lực. 
+						Bởi đối với chúng tôi, phát triển nhân sự chính là phát triển từ cốt lõi bên trong để thực hiện Sứ mệnh cùng Tầm nhìn của Tập đoàn.
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="awe-section-3">
+	<section class="section_img">
+		<div class="">
+			<div class="contain-img">
+				<div class="swiper-container s_img1">
+					<div class="swiper-wrapper"></div>
+				</div>
+			</div>
+		</div>
+	</section>
+</section>
+<section class="awe-section-4">
+	<section class="section_slider">
+		<div class="">
+			<div class="swiper-container home-slider-text">
+				<div class="swiper-wrapper"></div>
+				<div class="swiper-pagination"></div>
+			</div>
+		</div>
+	</section>
+</section>
+@if (BannerService != null)
+{
+	<section class="awe-section-5">
+		<section class="section_slider">
+			<div class="container">
+				<div class="titles">
+					<h3>
+						LĨNH VỰC HOẠT ĐỘNG
+					</h3>
+				</div>
+				@if (bannerSection2 != null)
+				{
+					<div class="control_slide swiper-container">
+						<div class="swiper-wrapper justify-content-center">
+							@foreach (var banner in bannerSection2)
+							{
+								<div class="swiper-slide">
+									<div class="text_control">
+										<img src="@banner.ImageUrl"
+											 alt="@banner.Name" />
+									</div>
+								</div>
+							}
+						</div>
+					</div>
+				}
+				@if (bannerSection3 != null)
+				{
+					<div class="swiper-container home-slider-control">
+						<div class="swiper-wrapper">
+							@foreach (var banner in bannerSection3)
+							{
+								<div class="items swiper-slide">
+									<a href="">
+										<img class="lazyload"
+											 src="@banner.ImageUrl"
+											 alt="@banner.Name" />
+									</a>
+								</div>
+							}
+						</div>
+						<div class="swiper-pagination"></div>
+					</div>
+				}
+			</div>
+		</section>
+	</section>
+}
+<section class="awe-section-6">
+	<section class="section_img">
+		<div class="">
+			<div class="contain-img">
+				<div class="swiper-container s_img2">
+					<div class="swiper-wrapper"></div>
+				</div>
+			</div>
+		</div>
+	</section>
+</section>
+@if (BannerService != null)
+{
+	@if (bannerSection4 != null)
+	{
+		<section class="awe-section-7">
+			<section class="section_slider">
+				<div class="swiper-container home-slider2">
+					<div class="swiper-wrapper">
+						@foreach (var banner in bannerSection4)
+						{
+							<div class="items swiper-slide">
+								<a href="#">
+									<img class="lazyload"
+										 src="@banner.ImageUrl"
+										 alt="@banner.Name" />
+								</a>
+							</div>
+						}
+					</div>
+					<div class="swiper-pagination"></div>
+				</div>
+			</section>
+		</section>
+	}
+}
+@if (NewsService != null)
+{
+	<section class="awe-section-11">
+		<section class="slider">
+			<div class="">
+				<div class="row">
+					@if (homeNews != null)
+					{
+						<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 sl-right">
+							<div class="home-slider3 swiper-container">
+								<div class="swiper-wrapper">
+									@foreach (var news in homeNews)
+									{
+										<div class="items swiper-slide">
+											<a asp-controller="News" asp-action="Details" class="image-blog" asp-route-id="@news.Id" title="@news.Title">
+												<img class="lazyload"
+													 src="@news.Image"
+													 alt="@news.Title" />
+											</a>
+											<div class="entry">
+												<a class="category" href="/News" title="">Tin tức</a>
+												<h3>
+													<a asp-controller="News" asp-action="Details" asp-route-id="@news.Id"
+													   title="@news.Title">
+														@news.Title
+													</a>
+												</h3>
+												<span class="time">
+													<i class="fa fa-clock-o"></i>
+													@(news.StartDate != null ? news.StartDate.ToString("dd/MM/yyyy") : "N/A")
+												</span>
+											</div>
+										</div>
+									}
+								</div>
+								<div class="swiper-button-prev">
+									<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-left"
+										 role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+										 class="svg-inline--fa fa-arrow-left fa-w-14">
+										<path fill="currentColor"
+											  d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"
+											  class=""></path>
+									</svg>
+								</div>
+								<div class="swiper-button-next">
+									<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-right"
+										 role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+										 class="svg-inline--fa fa-arrow-right fa-w-14">
+										<path fill="currentColor"
+											  d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"
+											  class=""></path>
+									</svg>
+								</div>
+								<div class="swiper-pagination"></div>
+							</div>
+						</div>
+					}
+					@if (hotNews != null)
+					{
+						<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sl-left">
+							<div class="row">
+								@foreach (var news in hotNews)
+								{
+									<div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 banner-slider">
+										<div class="slider-banner-right">
+											<div class="blog_item">
+												<a asp-controller="News" asp-action="Details" class="image-blog" asp-route-id="@news.Id" title="@news.Title">
+													<img class="lazyload" src="@news.Image" alt="@news.Title">
+												</a>
+												<div class="entry">
+													<a class="category" href="/News" title="">Tin tức</a>
+													<h3>
+														<a asp-controller="News" asp-action="Details" class="image-blog" asp-route-id="@news.Id" title="@news.Title">
+															@news.Title
+														</a>
+													</h3>
+													<span class="time">
+														<i class="fa fa-clock-o"></i>
+														@(news.StartDate != null ? news.StartDate.ToString("dd/MM/yyyy") : "N/A")
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								}
+							</div>
+						</div>
+					}
+				</div>
+			</div>
+		</section>
+	</section>
+}
+
+<div class="backdrop__body-backdrop___1rvky"></div>
+<script src="~/assests/js/home.js"></script>

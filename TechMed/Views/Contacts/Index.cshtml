@@ -1,48 +1,147 @@
 ﻿@model IEnumerable<TechMed.Areas.Admin.Models.Contact>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link href="~/assests/css/contact.css" rel="stylesheet" />
+<div class="breadcrumb_background">
+	<span class="overlay"></span>
+	<div class="title_full">
+		<div class="container a-center">
+			<span class="title_page">Liên hệ</span>
+		</div>
+	</div>
+</div>
+<section class="bread-crumb">
+	<span class="crumb-border"></span>
+	<div class="container">
+		<div class="row">
+			<div class="col-12 a-left">
+				<ul class="breadcrumb">
+					<li class="home">
+						<a href="/">
+							<span>Trang chủ</span>
+						</a>
+						<span class="mr_lr">
+							&nbsp;<i class="fa fa-angle-right"></i>
+							&nbsp;
+						</span>
+					</li>
+					<li>
+						<strong>
+							<span>Liên hệ</span>
+						</strong>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+<div class="page_contact ">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="wrapcontact">
+					<div class="iFrameMap">
+						<div id="contact_map" class="map">
+							<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6401.561000113513!2d105.80206263880433!3d20.999534230934078!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac97ec1852a7%3A0xc52e8c9935768f5f!2zNjBCIE5ndXnhu4VuIEh1eSBUxrDhu59uZywgVGhhbmggWHXDom4gVHJ1bmcsIFRoYW5oIFh1w6JuLCBIw6AgTuG7mWksIFZpZXRuYW0!5e0!3m2!1sen!2s!4v1715092353937!5m2!1sen!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
+				<div class="section left_contact">
+					<h1 class="title-head-contact a-left">Liên hệ</h1>
+					<div class="pt-5">
+						<div class="alert alert-success d-none" role="alert">
+							<h4 class="alert-heading">Thành công!</h4>
+							<p>Gửi thành công! Cảm ơn ý kiến đóng góp của bạn </p>
+						</div>
+						<div class="alert alert-danger d-none" role="alert">
+							<h4 class="alert-heading">Dữ liệu không hợp lệ!</h4>
+							<p>
+								Gửi thất bại! Vui lòng kiểm tra thông tin của bạn.
+							</p>
+						</div>
+					</div>
+					<div id="pagelogin">
+						<form method="post" id="contact" accept-charset="UTF-8">
+							<div class="form-signup clearfix">
+								<div class="row group_contact">
+									<fieldset class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+										<label>
+											Họ và tên <em>*</em>
+										</label>
+										<input type="text" class="form-control  form-control-lg"
+											   required value="" name="Name">
+									</fieldset>
+									<fieldset class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+										<label>
+											Email <em>*</em>
+										</label>
+										<input placeholder="" type="email"
+											   required id="email1"
+											   class="form-control form-control-lg" name="Email">
+									</fieldset>
+									<fieldset class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+										<label>
+											Nội dung <em>*</em>
+										</label>
+										<textarea name="Content" id="comment"
+												  class="form-control content-area form-control-lg" rows="5"
+												  Required></textarea>
+									</fieldset>
+									<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+										<button type="submit" onclick="sendContact(event)" class="btn btn-primary btn-lienhe">
+											Gửi liên
+											hệ
+										</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<div class="contact-right">
+					<div class="page_cotact">
+						<a href="/" class="logo">
+							<img src="./images/techmedcom.png"
+								 alt="techmed" title="TechMed" class="img-responsive">
+						</a>
+						<p class="text_des">
+							Mang đến những sản phẩm chất lượng, tâm huyết và tinh túy nhất gửi tới cộng đồng người Việt và Thế Giới
+						</p>
+					</div>
+					<div class="content-contact">
+						<div class="icon">
+							<i class="fas fa-map-marker-alt"></i>
+						</div>
+						<span>
+							60B Nguyễn Huy Tưởng, Thanh Xuân, Hà Nội.
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+						</span>
+					</div>
+					<div class="content-contact">
+						<div class="icon">
+							<i class="fas fa-phone"></i>
+						</div>
+						<a class="fone" href="tel:19008169">1900.8169</a>
+					</div>
+					<div class="content-contact">
+						<div class="icon">
+							<i class="far fa-envelope"></i>
+						</div>
+						<a href="mailto:">
+							Congtytechmedcom@gmail.com
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="./js/main.js" type="text/javascript"></script>
+<script src="~/assests/js/contact.js"></script>

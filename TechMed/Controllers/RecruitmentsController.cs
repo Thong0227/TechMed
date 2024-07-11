@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using TechMed.Areas.Admin.Data;
 using TechMed.Areas.Admin.Models.Recruitment;
+using X.PagedList;
 
 namespace TechMed.Controllers
 {
@@ -20,29 +22,47 @@ namespace TechMed.Controllers
         }
 
         // GET: Recruitments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            var appDbContext = _context.Recruitments.Include(r => r.RecruitmentCate);
-            return View(await appDbContext.ToListAsync());
+            if (_context.Recruitments != null)
+            {
+                int pageSize = 4; //SL phan tu tren 1 trang
+                int pageNumber = (page ?? 1);
+                var recruitments = await _context.Recruitments
+                            .Include(r => r.RecruitmentCate).ToListAsync();
+                IPagedList<Recruitment> recruitmentsPaging = recruitments.ToPagedList(pageNumber, pageSize);
+                if (recruitments != null)
+                {
+                    return View(recruitmentsPaging);
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            return View();
         }
 
         // GET: Recruitments/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.Recruitments == null)
+            if (id == null)
             {
                 return NotFound();
             }
-
-            var recruitment = await _context.Recruitments
+            if (_context.Recruitments != null)
+            {
+                var recruitment = await _context.Recruitments
                 .Include(r => r.RecruitmentCate)
+                .Include(r => r.RecruitmentTags).ThenInclude(r => r.Tag)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (recruitment == null)
-            {
-                return NotFound();
+                if (recruitment == null)
+                {
+                    return NotFound();
+                }
+                return View(recruitment);
             }
-
-            return View(recruitment);
+            return View();
         }
 
     }

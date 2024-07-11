@@ -1,66 +1,138 @@
-﻿@model IEnumerable<TechMed.Areas.Admin.Models.Banner.Banner>
+﻿@model X.PagedList.IPagedList<TechMed.Areas.Admin.Models.Banner.Banner>
+@using X.PagedList.Mvc.Core
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "Danh sách banner";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Danh sách banner</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="searchInner">
+	<form method="post">
+		<div class="row">
+			<div class="searchField col-md-4 col-6">
+				<input class="form-control" type="text" name="keyword" value="@ViewBag.keyword" placeholder="Search content here..." />
+			</div>
+
+			<div class="btnFilter col-md col-12">
+				<input type="submit" value="Tìm kiếm" class="btn" />
+			</div>
+		</div>
+	</form>
+</div>
+
+<div class="d-flex justify-content-between align-items-center button-header">
+
+	<a class="btn btn-success btnCreateNew" asp-action="Create">Tạo mới</a>
+
+	@Html.PagedListPager(Model, page => Url.Action("Index", "Banners", new { page = page }))
+</div>
+
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BannerPositionId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BannerPositionId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
+	<thead>
+		<tr>
+			<th>
+				Tên
+			</th>
+			<th>
+				Ảnh
+			</th>
+			<th>
+				Trạng thái
+			</th>
+			<th>
+				Ngày bắt đầu
+			</th>
+			<th>
+				Ngày kết thúc
+			</th>
+			<th>
+				Vị trí banner
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td>
+					<img style="width:50px;height:50px" src="@item.ImageUrl">
+					@* @Html.DisplayFor(modelItem => item.ImageUrl) *@
+				</td>
+				<td>
+					<div class="d-flex align-items-center">
+						@if (item.Status == 1)
+						{
+							<div class="status-dot status-active"></div>
+							<span>Active</span>
+						}
+						else if (item.Status == 0)
+						{
+							<div class="status-dot status-warning"></div> <span>Inactive</span>
+						}
+						else
+						{
+							<span>Unknown status</span>
+						}
+					</div>
+				</td>
+				<td>
+					@(item.StartDate != null ? item.StartDate.ToString("dd/MM/yyyy hh:mm:ss") : "N/A")
+				</td>
+				<td>
+					@(item.EndDate != null ? item.EndDate?.ToString("dd/MM/yyyy hh:mm:ss") : "N/A")
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.BannerPosition.Name)
+				</td>
+				<td>
+					<div class="dropdown">
+						<a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+							<i class="fa-solid fa-bars text-secondary"></i>
+						</a>
+
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pencil"></i> Sửa</a></li>
+							<li data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id" class="btnDelete">
+								<a href="javascript:void(0)" class="dropdown-item"><i class="fa-solid fa-trash-can text-danger"></i> Xóa</a>
+							</li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Xác nhận xóa ?</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-warning" role="alert">
+					Bạn có chắc chắn muốn xóa: Banner
+				</div>
+			</div>
+			<div class="modal-footer">
+				<form asp-action="Delete">
+					<input type="hidden" name="Id" class="idElement" />
+					<input type="submit" value="Xóa" class="btn btn-danger" />
+					<input type="button" value="không" class="btn btn-secondary" data-bs-dismiss="modal"/>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).on("click", ".btnDelete", function () {
+		var itemId = $(this).data('id');
+		$(".modal-footer .idElement").val(itemId);
+	});
+</script>

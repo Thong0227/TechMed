@@ -1,0 +1,42 @@
+﻿@page
+@model LoginModel
+
+@{
+	ViewData["Title"] = "Log in";
+}
+
+<h1 class="text-center">Đăng nhập</h1>
+<style>
+	#account {
+		width: 300px;
+		
+	}
+
+	#login-submit{
+		background-color: #80b541;
+	}
+</style>
+<div class="d-flex justify-content-center">
+	<form id="account" method="post">
+		<hr />
+		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+		<div class="form-floating">
+			<label asp-for="Input.Email" class="form-label"></label>
+			<input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" style="padding:10px"/>
+			<span asp-validation-for="Input.Email" class="text-danger"></span>
+		</div>
+		<div class="form-floating">
+			<label asp-for="Input.Password" class="form-label"></label>
+			<input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" style="padding:10px" />
+			<span asp-validation-for="Input.Password" class="text-danger"></span>
+		</div>
+		<div class="d-flex justify-content-center">
+			<button id="login-submit" type="submit" class="btn btn-lg btn-primary">Log in</button>
+		</div>
+	</form>
+</div>
+
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

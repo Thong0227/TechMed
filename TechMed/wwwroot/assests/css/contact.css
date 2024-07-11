@@ -1,0 +1,241 @@
+.page_cotact {
+    font-family: "Roboto",sans-serif
+}
+
+.page_cotact .title-head-contact {
+    color: #363636;
+    font-size: 30px !important;
+    font-family: "Roboto",sans-serif;
+    font-weight: 700;
+    text-transform: none;
+    position: relative;
+    display: block;
+    margin: 0;
+    padding-bottom: 10px
+}
+
+.page_cotact .title-head-contact span {
+    display: block;
+    padding: 10px 0
+}
+
+.page_cotact p {
+    color: #8d90a6
+}
+
+.page_cotact .title_db {
+    font-size: 18px !important;
+    font-weight: 700;
+    color: #363636;
+    text-transform: uppercase;
+    position: relative;
+    display: block;
+    margin: 0;
+    padding-bottom: 0px
+}
+
+.page_cotact .title_db span {
+    display: block;
+    padding: 10px 0
+}
+
+.page_cotact .form-signup {
+    margin: 0px
+}
+
+.page-login .title-head-contact:before {
+    width: 25%
+}
+
+.group_contact .form-group {
+    padding: 0px 15px;
+    margin-bottom: 15px;
+    color: #363636
+}
+
+.group_contact .form-group .form-control {
+    border-radius: 0px !important;
+    font-size: 14px;
+    color: #363636;
+    height: 40px;
+    padding: 0px 15px;
+    border: 1px solid #e1e1e1;
+    background: #fff
+}
+
+.group_contact .form-group .form-control::-webkit-input-placeholder {
+    color: #acacac
+}
+
+.group_contact .form-group .form-control::-moz-placeholder {
+    color: #acacac
+}
+
+.group_contact .form-group .form-control:-ms-input-placeholder {
+    color: #acacac
+}
+
+.group_contact .form-group .content-area {
+    min-height: 100px;
+    padding: 10px 15px;
+    border-radius: 0 !important;
+    resize: none
+}
+
+.group_contact .form-group input,.group_contact .form-group textarea {
+    border-color: #f7f7f7;
+    background-color: #f7f7f7
+}
+
+.group_contact .form-group input:focus,.group_contact .form-group textarea:focus {
+    border-color: #f7f7f7
+}
+
+.group_contact .form-group .btn-50-full {
+    font-family: "Roboto",sans-serif;
+    position: absolute;
+    right: 15px;
+    bottom: 0px;
+    box-shadow: none;
+    padding: 8px 20px;
+    font-size: 14px;
+    color: #fff;
+    background: #272727;
+    border: solid 1px #272727
+}
+
+.group_contact .form-group .btn-50-full:hover {
+    border-color: #80b541;
+    background: #fff;
+    color: #80b541
+}
+
+.group_contact .btn-lienhe {
+    border-radius: 0;
+    font-family: 'Open Sans', sans-serif;
+    border: 1px #272727 solid;
+    background: #272727;
+    color: #fff;
+    padding: 0px 20px;
+    transition: color 300ms ease-in-out 0s, background-color 300ms ease-in-out 0s, background-position 300ms ease-in-out 0s;
+    font-weight: 400;
+    text-transform: uppercase;
+    display: inline-block;
+    min-width: 80px;
+    position: relative
+}
+
+.group_contact .btn-lienhe:hover {
+    background: #80b541;
+    color: #fff;
+    border-color: #80b541
+}
+
+.thank_text {
+    color: #272727;
+    display: block;
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 30px
+}
+
+.google-map {
+    width: 100%
+}
+
+.google-map .map {
+    width: 100%;
+    height: 450px;
+    background: #dedede
+}
+
+@media (max-width: 543px) {
+    .page-login span.intr {
+        font-size:13px !important
+    }
+
+    .address .page_address .adr_title .title-head a {
+        width: 100%;
+        margin: 15px 0
+    }
+}
+
+.iFrameMap {
+    width: 100%;
+    float: left;
+    margin-bottom: 30px
+}
+
+.iFrameMap iframe {
+    width: 100% !important;
+    height: 430px
+}
+
+.title-head-contact {
+    color: #000;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 0px
+}
+
+.page_contact {
+    padding: 0 0 30px;
+    width: 100%;
+    float: left
+}
+
+.page_contact label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700
+}
+
+.page_contact label em {
+    color: red
+}
+
+.contact-right {
+    width: 100%;
+    float: left
+}
+
+.contact-right .page_cotact .text_des {
+    width: 100%;
+    float: left;
+    font-size: 13px;
+    margin: 20px 0;
+    color: #363636;
+    font-family: Arial,"Helvetica Neue",Helvetica,sans-serif
+}
+
+.contact-right .content-contact {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 15px;
+    width: 100%;
+    float: left
+}
+
+.contact-right .content-contact .icon i {
+    width: 10px;
+    height: 15px;
+    float: left;
+    margin-top: 5px;
+    color: #272727
+}
+
+.contact-right .content-contact .fa-phone {
+    transform: rotate(-270deg);
+    margin-top: 3px !important
+}
+
+.contact-right .content-contact a,.contact-right .content-contact span {
+    width: calc(100% - 15px);
+    padding-left: 15px;
+    float: left;
+    font-family: Arial,"Helvetica Neue",Helvetica,sans-serif
+}

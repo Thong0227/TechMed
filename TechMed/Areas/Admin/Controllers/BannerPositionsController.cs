@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TechMed.Areas.Admin.Data;
 using TechMed.Areas.Admin.Models.Banner;
+using TechMed.Areas.Admin.Models.News;
+using X.PagedList;
 
 namespace TechMed.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class BannerPositionsController : Controller
     {
         private readonly AppDbContext _context;
@@ -21,11 +25,52 @@ namespace TechMed.Areas.Admin.Controllers
         }
 
         // GET: Admin/BannerPositions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-              return _context.BannerPosition != null ? 
-                          View(await _context.BannerPosition.ToListAsync()) :
-                          Problem("Entity set 'AppDbContext.BannerPosition'  is null.");
+            int pageSize = 10; //SL phan tu tren 1 trang
+            int pageNumber = (page ?? 1);
+            if (_context.BannerPosition == null)
+            {
+                return Problem("Entity set 'AppDbContext.BannerPosition' is null.");
+            }
+            var bannerPositions = await _context.BannerPosition.ToListAsync();
+            IPagedList<BannerPosition> bannerPositionsPaging = bannerPositions.ToPagedList(pageNumber, pageSize);
+            if (bannerPositions != null)
+            {
+                return View(bannerPositionsPaging);
+            }
+            else
+            {
+                return Problem("Entity set 'AppDbContext.BannerPosition' is null.");
+            }
+        }
+        [HttpPost]
+        // GET: Admin/BannerPositions
+        public async Task<IActionResult> Index(string? keyword, int? page)
+        {
+            int pageSize = 10; //SL phan tu tren 1 trang
+            int pageNumber = (page ?? 1);
+            if (_context.BannerPosition == null)
+            {
+                return Problem("Entity set 'AppDbContext.BannerPosition' is null.");
+            }
+            IQueryable<BannerPosition> bannerPositionQuerry = _context.BannerPosition;
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                bannerPositionQuerry = bannerPositionQuerry.Where(n => n.Name.Contains(keyword));
+            }
+            var bannerPositions = await bannerPositionQuerry.ToListAsync();
+            IPagedList<BannerPosition> bannerPositionsPaging = bannerPositions.ToPagedList(pageNumber, pageSize);
+            ViewBag.keyword = keyword;
+            if (bannerPositions != null)
+            {
+                return View(bannerPositionsPaging);
+            }
+            else
+            {
+                return Problem("Entity set 'AppDbContext.BannerPosition' is null.");
+            }
         }
 
         // GET: Admin/BannerPositions/Details/5

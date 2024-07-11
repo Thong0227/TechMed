@@ -5,53 +5,117 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1>Chỉnh sửa</h1>
 
 <h4>News</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedDate" class="control-label"></label>
-                <input asp-for="CreatedDate" class="form-control" />
-                <span asp-validation-for="CreatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NewsCategoryId" class="control-label"></label>
-                <select asp-for="NewsCategoryId" class="form-control" asp-items="ViewBag.NewsCategoryId"></select>
-                <span asp-validation-for="NewsCategoryId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+<form asp-action="Edit" enctype="multipart/form-data">
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<div class="row">
+		<div class="col-md-6 col-12">
+			<input type="hidden" name="CreatedDate" value="@Model.CreatedDate" />
+			<div class="form-group">
+				<label asp-for="Title" class="control-label">Tiêu đề</label>
+				<input asp-for="Title" class="form-control" />
+				<span asp-validation-for="Title" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="NewsCategoryId" class="control-label">Danh mục tin tức</label>
+				<select asp-for="NewsCategoryId" class="form-control" asp-items="ViewBag.NewsCategoryId"></select>
+				<span asp-validation-for="NewsCategoryId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Status" class="control-label">Trạng thái</label>
+				<select asp-for="Status" class="form-control">
+					<option value="1">Hoạt động</option>
+					<option value="0">Không hoạt động</option>
+				</select>
+				<span asp-validation-for="Status" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Type" class="control-label">Loại</label>
+				<select asp-for="Type" class="form-control">
+					<option value="0">--Chọn loại tin tức--</option>
+					<option value="1">Trang chủ</option>
+					<option value="2">Hot</option>
+					<option value="3">Mới</option>
+				</select>
+				<span asp-validation-for="Status" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="col-md-6 col-12">
+			<div class="form-group">
+				<label asp-for="Image" class="control-label">Ảnh</label>
+				<div class="d-flex">
+					<input type="file" name="Image" class="form-control" accept="image/*" />
+					<img src="@Model.Image" id="imgData" name="imgData" style="max-width:30px;max-height:30px" />
+				</div>
+				<span asp-validation-for="Image" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="StartDate" class="control-label">Ngày bắt đầu</label>
+				<input asp-for="StartDate" class="form-control" type="datetime-local" />
+				<span asp-validation-for="StartDate" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="EndDate" class="control-label">Ngày kết thúc</label>
+				<input asp-for="EndDate" class="form-control" type="datetime-local" />
+				<span asp-validation-for="CreatedDate" class="text-danger"></span>
+			</div>
+			
+			<div class="form-group">
+				<label asp-for="Order" class="control-label">Sắp xếp</label>
+				<input asp-for="Order" class="form-control" />
+				<span asp-validation-for="Order" class="text-danger"></span>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Description" class="control-label">Mô tả ngắn</label>
+		<textarea asp-for="Description" name="Description" class="form-control"></textarea>
+		<span asp-validation-for="Description" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Content" class="control-label">Nội dung bài viết</label>
+		<textarea asp-for="Content" name="Content" class="form-control"></textarea>
+		<span asp-validation-for="Content" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<input type="submit" value="Lưu" class="btn btn-primary" id="btnSave" />
+	</div>
+</form>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+<script src="~/lib/ckeditor/ckeditor.js"></script>
+<script>
+	$(document).ready(function () {
+		CKEDITOR.replace("Content", {
+			height: 300,
+			width: 1000,
+			filebrowserUploadUrl: '/Admin/HandleFileUpload/UploadImage',
+			filebrowserBrowseUrl: '/Admin/HandleFileUpload/UploadExplore',
+			extraPlugins: 'notification'
+		});
+		CKEDITOR.replace("Description", {
+			height: 300,
+			width: 1000,
+			filebrowserUploadUrl: '/Admin/HandleFileUpload/UploadImage',
+			filebrowserBrowseUrl: '/Admin/HandleFileUpload/UploadExplore'
+		});
+		$('form[method="post"]').submit(function () {
+			var imgData = $('#imgData').attr('src');
+			if (imgData) {
+				// Thêm giá trị imgData vào một input hidden trong form
+				$('<input>').attr({
+					type: 'hidden',
+					name: 'imgData',
+					value: imgData
+				}).appendTo('form');
+			}
+		});
+	})
+</script>
 

@@ -1,72 +1,179 @@
-﻿@model IEnumerable<TechMed.Areas.Admin.Models.Recruitment.Recruitment>
-
+﻿@model X.PagedList.IPagedList<TechMed.Areas.Admin.Models.Recruitment.Recruitment>
+@inject TechMed.Service.NewsService NewsService;
+@inject TechMed.Service.RecruitmentService RecruitmentService;
+@inject TechMed.Service.BannerService BannerService;
+@using X.PagedList.Mvc.Core
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	var bannerRecruitment = BannerService.GetBannerByPositionCode("BANNER_SECTION5");
+	var enviromentNews = NewsService.GetNewsTypeNew(3);
+	var hotRecruitment = RecruitmentService.GetHotRecruitments(4);
 }
+<link href="~/assests/css/blog.css" rel="stylesheet" />
+<section class="blogpage">
+	@if (BannerService != null)
+	{
+		@if (bannerRecruitment != null)
+		{
+			<div class="banner_career">
+				@foreach (var banner in bannerRecruitment)
+				{
+					<img src="@banner.ImageUrl"
+						 alt="@banner.Name">
+				}
+				<div class="container ">
+					<div class="content">
+						<div class="title">
+						</div>
+						<div class="description">
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	}
+	
+	<div class="containers" itemscope itemtype="https://schema.org/Blog">
+		<meta itemprop="name" content="Tuyển dụng">
+		<meta itemprop="description" content="">
+		<div class="wrap_background_aside margin-bottom-0">
+			<div class="section full_background_blog">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<section class="list-blogs blog-main listmain_blog">
+								<table class="table-fill table">
+									<thead>
+										<tr>
+											<th class="sh-name ">Vị trí tuyển dụng</th>
+											<th class="sh-total">Lương</th>
+											<th class="sh-size">Hạn nộp</th>
+											<th class="sh-download"></th>
+										</tr>
+									</thead>
+									<tbody class="table-hover">
+										@foreach (var item in Model)
+										{
+											<tr>
+												<td class="text-left sh-jobname">
+													<a asp-action="Details" asp-route-id="@item.Id" title="@item.Name">@item.Name</a>
+													<div class="time_user">
+														<p class="time">
+															<i class="far fa-clock"></i>
+															#@if (item.RecruitmentCate != null)
+															{
+																@Html.DisplayFor(modelItem => item.RecruitmentCate.Name)
+															}
+														</p>
+														<p class="user">
+															<i class="fas fa-user"></i>
+															#@item.Quantity
+														</p>
+													</div>
+												</td>
+												<td class="sh-group text-left">#@item.Salary</td>
+												<td class="sh-sizes text-left">#@item.Deadline.ToString("dd/MM/yyyy")</td>
+												<td class="sh-download">
+													<div class="dropdown sub-title">
+														<a class="sub btn btn-secondary" asp-action="Details" asp-route-id="@item.Id" title="Xem chi tiết">
+															Xem chi tiết
+														</a>
+													</div>
+												</td>
+											</tr>
+										}
+									</tbody>
+								</table>
+								<div class="text-xs-right pageinate-page-blog section">
+									@Html.PagedListPager(Model, page => Url.Action("Index", "Recruitments", new { page = page }))
+								</div>
+							</section>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tab_blog">
+		<div class="container">
+			<div class="tab-ul">
+				<ul class="tabs">
+					<li class="nav-link active" data-tab="#tab-1">Gợi ý công việc phù hợp</li>
+					<li class="nav-link" data-tab="#tab-2">Các công việc đã xem</li>
+				</ul>
+				<div class="tab-content active" id="tab-1">
+					@if (hotRecruitment != null && hotRecruitment.Count > 0)
+					{
+						<div class="row">
+							@foreach (var item in hotRecruitment)
+							{
+								<div class="col-lg-3 col-6">
+									<a class="item" asp-controller="Recruitments" asp-action="Details" class="image-blog" asp-route-id="@item.Id" title="@item.Name">
+										@item.Name
+									</a>
+								</div>
+							}
+						</div>
+					}
+				</div>
+				<div class="tab-content" id="tab-2">
+					<div class="row">
+						<!-- sản phẩm đã xem -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	@if (enviromentNews != null && enviromentNews.Count > 0)
+	{
+		<div class="blog_moitruong">
+			<div class="container">
+				<div class="title">Môi trường làm việc </div>
+				<div class="row">
+					@foreach (var item in enviromentNews)
+					{
+						<div class="col-md-4 item item-1">
+							<div class="img">
+								<img src="@item.Image"
+									 alt="@item.Title">
+							</div>
+							<div class="content">
+								<div class="title"> @item.Title</div>
+								<a asp-controller="News" asp-action="Details" class="image-blog" asp-route-id="@item.Id" title="@item.Title">
+									TÌM HIỂU THÊM <i class="fas fa-arrow-right"></i>
+								</a>
+							</div>
+						</div>
+					}
 
-<h1>Index</h1>
+				</div>
+			</div>
+		</div>
+	}
+</section>
+<script type="text/javascript">
+	jQuery(document).ready(function ($) {
+		showViewedProducts();
+	});
+	function showViewedProducts() {
+		// Lấy danh sách đã xem từ local storage
+		let viewedProducts = JSON.parse(localStorage.getItem('viewedProducts')) || [];
+		let productsContainer = $('#tab-2').find('.row');
+		viewedProducts.forEach(product => {
+			// Tạo phần tử div cho mỗi sản phẩm
+			let productDiv = $('<div>').addClass('col-lg-3 col-6');
+			let productLink = $('<a>').addClass('item').attr('href', '/Recruitments/Details/' + product.id);
+			let productName = $('<p>').text(product.name);
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Salary)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Deadline)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RecruitmentCate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Salary)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Deadline)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecruitmentCate.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+			// Thêm phần tử vào phần tử chứa sản phẩm
+			productLink.append(productName);
+			productDiv.append(productLink);
+			productsContainer.append(productDiv);
+		});
+		// Kiểm tra nếu có nhiều hơn 4 sản phẩm, xóa phần tử đầu tiên
+		if (viewedProducts.length > 4) {
+			productsContainer.find('.col-lg-3:first').remove();
+		}
+	}
+</script>

@@ -5,7 +5,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1>Sửa</h1>
 
 <h4>Menu</h4>
 <hr />
@@ -15,19 +15,38 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Tên</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Order" class="control-label"></label>
+                <label asp-for="Order" class="control-label">Thứ tự</label>
                 <input asp-for="Order" class="form-control" />
                 <span asp-validation-for="Order" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
+                <label asp-for="Status" class="control-label">Trạng thái</label>
+                <select asp-for="Status" class="form-control">
+                    <option value="1">Hoạt động</option>
+                    <option value="0">Không hoạt động</option>
+                </select>
                 <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Link" class="control-label">Link dẫn</label>
+                <input asp-for="Link" class="form-control" />
+                <span asp-validation-for="Order" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParentId" class="control-label">Menu cha</label>
+                <select asp-for="ParentId" class="form-control">
+                    <option value="">-- Menu cha --</option>
+                    @foreach (var menu in ViewBag.ParentMenus)
+                    {
+                        <option value="@menu.Value">@menu.Text</option>
+                    }
+                </select>
+                <span asp-validation-for="ParentId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

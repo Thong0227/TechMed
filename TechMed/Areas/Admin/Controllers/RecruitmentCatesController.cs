@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TechMed.Areas.Admin.Data;
+using TechMed.Areas.Admin.Models.News;
 using TechMed.Areas.Admin.Models.Recruitment;
+using X.PagedList;
 
 namespace TechMed.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class RecruitmentCatesController : Controller
     {
         private readonly AppDbContext _context;
@@ -20,16 +24,59 @@ namespace TechMed.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/RecruitmentCates
-        public async Task<IActionResult> Index()
-        {
-              return _context.RecruitmentCate != null ? 
-                          View(await _context.RecruitmentCate.ToListAsync()) :
-                          Problem("Entity set 'AppDbContext.RecruitmentCate'  is null.");
-        }
+		// GET: Admin/RecruitmentCates
+		public async Task<IActionResult> Index(int? page)
+		{
+			int pageSize = 10; //SL phan tu tren 1 trang
+			int pageNumber = (page ?? 1);
+			if (_context.RecruitmentCate == null)
+			{
+				return Problem("Entity set 'AppDbContext.Banner' is null.");
+			}
+			var recruitmentCates = await _context.RecruitmentCate.ToListAsync();
+			IPagedList<RecruitmentCate> recruitmentCatesPaging = recruitmentCates.ToPagedList(pageNumber, pageSize);
+			if (recruitmentCates != null)
+			{
+				return View(recruitmentCatesPaging);
+			}
+			else
+			{
+				return Problem("Entity set 'AppDbContext.Banner' is null.");
+			}
+		}
 
-        // GET: Admin/RecruitmentCates/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+
+		[HttpPost]
+		public async Task<IActionResult> Index(string? keyword, int? page)
+		{
+			int pageSize = 10; //SL phan tu tren 1 trang
+			int pageNumber = (page ?? 1);
+			if (_context.RecruitmentCate == null)
+			{
+				return Problem("Entity set 'AppDbContext.Banner' is null.");
+			}
+			IQueryable<RecruitmentCate> recruitmentCatesQuerry = _context.RecruitmentCate;
+
+			if (!string.IsNullOrEmpty(keyword))
+			{
+				recruitmentCatesQuerry = recruitmentCatesQuerry.Where(n => n.Name.Contains(keyword));
+			}
+			var recruitmentCates = await recruitmentCatesQuerry.ToListAsync();
+
+			IPagedList<RecruitmentCate> recruitmentCatesPaging = recruitmentCates.ToPagedList(pageNumber, pageSize);
+			ViewBag.keyword = keyword;
+			if (recruitmentCates != null)
+			{
+				return View(recruitmentCatesPaging);
+			}
+			else
+			{
+				return Problem("Entity set 'AppDbContext.Banner' is null.");
+			}
+		}
+
+		// GET: Admin/RecruitmentCates/Details/5
+		public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.RecruitmentCate == null)
             {

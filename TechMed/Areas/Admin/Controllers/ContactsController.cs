@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TechMed.Areas.Admin.Data;
 using TechMed.Areas.Admin.Models;
+using TechMed.Areas.Admin.Models.News;
+using X.PagedList;
 
 namespace TechMed.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class ContactsController : Controller
     {
         private readonly AppDbContext _context;
@@ -21,13 +25,55 @@ namespace TechMed.Areas.Admin.Controllers
         }
 
         // GET: Admin/Contacts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-              return _context.Contact != null ? 
-                          View(await _context.Contact.ToListAsync()) :
-                          Problem("Entity set 'AppDbContext.Contact'  is null.");
+            int pageSize = 10; //SL phan tu tren 1 trang
+            int pageNumber = (page ?? 1);
+            if (_context.Contact == null)
+            {
+                return Problem("Entity set 'AppDbContext.Contact' is null.");
+            }
+            var contacts = await _context.Contact.ToListAsync();
+            IPagedList<Contact> contactPaging = contacts.ToPagedList(pageNumber, pageSize);
+            if (contacts != null)
+            {
+                return View(contactPaging);
+            }
+            else
+            {
+                return Problem("Entity set 'AppDbContext.Banner' is null.");
+            }
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> Index(string? keyword, int? page)
+        {
+            int pageSize = 10; //SL phan tu tren 1 trang
+            int pageNumber = (page ?? 1);
+            if (_context.Contact == null)
+            {
+                return Problem("Entity set 'AppDbContext.Contact' is null.");
+            }
+            IQueryable<Contact> contactQuerry = _context.Contact;
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                contactQuerry = contactQuerry.Where(n => n.Name.Contains(keyword));
+            }
+            var contacts = await contactQuerry.ToListAsync();
+
+            IPagedList<Contact> contactPaging = contacts.ToPagedList(pageNumber, pageSize);
+            ViewBag.keyword = keyword;
+            if (contacts != null)
+            {
+                return View(contactPaging);
+            }
+            else
+            {
+                return Problem("Entity set 'AppDbContext.Contact' is null.");
+            }
+        }
         // GET: Admin/Contacts/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -140,7 +186,7 @@ namespace TechMed.Areas.Admin.Controllers
         // POST: Admin/Contacts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             if (_context.Contact == null)
             {

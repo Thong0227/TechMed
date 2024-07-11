@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TechMed.Areas.Admin.Data;
+using TechMed.Areas.Admin.Models.News;
 using TechMed.Areas.Admin.Models.Recruitment;
+using X.PagedList;
 
 namespace TechMed.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class TagsController : Controller
     {
         private readonly AppDbContext _context;
@@ -21,11 +25,53 @@ namespace TechMed.Areas.Admin.Controllers
         }
 
         // GET: Admin/Tags
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-              return _context.Tags != null ? 
-                          View(await _context.Tags.ToListAsync()) :
-                          Problem("Entity set 'AppDbContext.Tags'  is null.");
+            int pageSize = 10; //SL phan tu tren 1 trang
+            int pageNumber = (page ?? 1);
+            if (_context.Tags == null)
+            {
+                return Problem("Entity set 'AppDbContext.Tags' is null.");
+            }
+            var tags = await _context.Tags.ToListAsync();
+            IPagedList<Tag> tagPaging = tags.ToPagedList(pageNumber, pageSize);
+            if (tags != null)
+            {
+                return View(tagPaging);
+            }
+            else
+            {
+                return Problem("Entity set 'AppDbContext.Banner' is null.");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(string? keyword, int? page)
+        {
+            int pageSize = 10; //SL phan tu tren 1 trang
+            int pageNumber = (page ?? 1);
+            if (_context.Tags == null)
+            {
+                return Problem("Entity set 'AppDbContext.Tag' is null.");
+            }
+            IQueryable<Tag> tagQuerry = _context.Tags;
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                tagQuerry = tagQuerry.Where(n => n.Name.Contains(keyword));
+            }
+            var tags = await tagQuerry.ToListAsync();
+
+            IPagedList<Tag> tagsPaging = tags.ToPagedList(pageNumber, pageSize);
+            ViewBag.keyword = keyword;
+            if (tags != null)
+            {
+                return View(tagsPaging);
+            }
+            else
+            {
+                return Problem("Entity set 'AppDbContext.Tags' is null.");
+            }
         }
 
         // GET: Admin/Tags/Details/5

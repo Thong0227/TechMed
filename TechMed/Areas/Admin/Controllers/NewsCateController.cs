@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TechMed.Areas.Admin.Data;
+using TechMed.Areas.Admin.Models.Banner;
 using TechMed.Areas.Admin.Models.News;
+using X.PagedList;
 
 namespace TechMed.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class NewsCateController : Controller
     {
         private readonly AppDbContext _context;
@@ -21,15 +25,57 @@ namespace TechMed.Areas.Admin.Controllers
         }
 
         // GET: Admin/NewsCate
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-              return _context.NewsCategory != null ? 
-                          View(await _context.NewsCategory.ToListAsync()) :
-                          Problem("Entity set 'AppDbContext.NewsCategory'  is null.");
-        }
+			int pageSize = 10; //SL phan tu tren 1 trang
+			int pageNumber = (page ?? 1);
+            if(_context.NewsCategory == null)
+            {
+				return Problem("Entity set 'AppDbContext.Banner' is null.");
+			}
+            var newsCates = await _context.NewsCategory.ToListAsync();
+			IPagedList<NewsCategory> newsCatesPaging = newsCates.ToPagedList(pageNumber, pageSize);
+			if (newsCates != null)
+			{
+				return View(newsCatesPaging);
+            }
+            else
+            {
+				return Problem("Entity set 'AppDbContext.Banner' is null.");
+			}
+		}
 
-        // GET: Admin/NewsCate/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        [HttpPost]
+		public async Task<IActionResult> Index(string? keyword, int? page)
+		{
+			int pageSize = 10; //SL phan tu tren 1 trang
+			int pageNumber = (page ?? 1);
+			if (_context.NewsCategory == null)
+			{
+				return Problem("Entity set 'AppDbContext.Banner' is null.");
+			}
+			IQueryable<NewsCategory> newsCatesQuerry = _context.NewsCategory;
+
+			if (!string.IsNullOrEmpty(keyword))
+			{
+                newsCatesQuerry =  newsCatesQuerry.Where(n => n.Name.Contains(keyword));
+			}
+			var newsCates = await newsCatesQuerry.ToListAsync();
+
+			IPagedList<NewsCategory> newsCatesPaging = newsCates.ToPagedList(pageNumber, pageSize);
+            ViewBag.keyword = keyword;
+            if (newsCates != null)
+			{
+				return View(newsCatesPaging);
+			}
+			else
+			{
+				return Problem("Entity set 'AppDbContext.Banner' is null.");
+			}
+		}
+
+		// GET: Admin/NewsCate/Details/5
+		public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.NewsCategory == null)
             {

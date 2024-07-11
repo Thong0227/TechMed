@@ -1,0 +1,117 @@
+﻿@inject TechMed.Service.MenuService MenuService;
+
+<header class="header header_menu">
+    <div class="topbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-3 d-none d-lg-block tophead_left">
+                    <a class="facebook" href="https://www.facebook.com/techmedcom" target="_blank"
+                       title="Facebook">
+                        <span class="ico">
+                            <img src="//bizweb.dktcdn.net/100/474/205/themes/928207/assets/facebook.png?1703129650401"
+                                 alt="Facebook">
+                        </span>
+                        techmedcom
+
+                    </a>
+                    <a class="mail" href="mailto:partner@techmedcom.vn" title="Email">
+                        <span class="ico">
+                            <img src="//bizweb.dktcdn.net/100/474/205/themes/928207/assets/email.png?1703129650401"
+                                 alt="Email">
+                        </span>
+                        Congtytechmedcom@gmail.com
+
+                    </a>
+                </div>
+                <div class="col-lg-6 col-12 tophead_right">
+                    <ul>
+                        <li>
+                            <a href="https://www.facebook.com/techmedcom" target="_blank" title="Facebook">
+                                <img src="//bizweb.dktcdn.net/100/474/205/themes/928207/assets/facebook.png?1703129650401"
+                                     alt="Facebook">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" target="_blank" title="Youtube">
+                                <img src="//bizweb.dktcdn.net/100/474/205/themes/928207/assets/youtube.png?1703129650401"
+                                     alt="Youtube">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" target="_blank" title="Youtube">
+                                <img src="//bizweb.dktcdn.net/100/474/205/themes/928207/assets/tik-tok.png?1703129650401"
+                                     alt="Youtube">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mid-header wid_100">
+        <div class="container">
+            <div class="content_header">
+                <div class="header-main">
+                    <div class="row align-items-center">
+                        <div class="col-xl-3 col-lg-3 col-md-5 col-5">
+                            <div class="logo_center a-center">
+                                <div class="logo">
+                                    <a href="/" class="logo-wrapper ">
+                                        <img src="/images/techmedcom.png"
+                                             alt="logo Techmedcom">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-9 col-lg-9 col-md-7 col-7">
+                            <div class="menu-bar-mobile nav-mobile-button d-lg-none d-block">
+                                <div class="menu-bar">
+                                    <i class="fa fa-bars"></i>
+                                </div>
+                            </div>
+                            <div class="header-menu">
+                                <div class="wrap_main">
+                                    <div class="bg-header-nav">
+                                        <div class="rows row-noGutter-2">
+                                            <nav class="header-nav">
+                                                @if (MenuService != null)
+                                                {
+                                                    <ul class="item_big">
+                                                        <li class="nav-item"><a class="a-img" href="/"><i class="fas fa-home"></i></a></li>
+                                                        @foreach (var menu in MenuService.GetMenus())
+                                                        {
+                                                            if (MenuService.GetSubMenus(menu.Id).Count > 0)
+                                                            {
+                                                                <li class="nav-item has-sub">
+                                                                    <a class="a-img" href="@menu.Link">@menu.Name</a>
+                                                                    <div class="icon-subnav"><i class="fa fa-angle-down"></i></div>
+                                                                    <ul class="sub-menu">
+                                                                        @foreach (var subMenu in MenuService.GetSubMenus(menu.Id))
+                                                                        {
+                                                                            <li class="menu-item-sub"><a href="@subMenu.Link">@subMenu.Name</a></li>
+                                                                        }
+                                                                    </ul>
+                                                                </li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li class="nav-item">
+                                                                    <a class="a-img" href="@menu.Link">@menu.Name</a>
+                                                                </li>
+                                                            }
+                                                        }
+                                                    </ul>
+                                                }
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="menu-overlay" class=""></div>
+</header>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TechMed.Areas.Admin.Data;
 using TechMed.Areas.Admin.Models;
+using TechMed.Areas.Admin.Models.Recruitment;
 
 namespace TechMed.Controllers
 {
@@ -30,15 +31,15 @@ namespace TechMed.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email,Content")] Contact contact)
+        public async Task<IActionResult> Create(Contact contact)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(contact);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(contact);
-        }
+				contact.Id = Guid.NewGuid();
+				_context.Add(contact);
+				return Json(new { success = true });
+			}
+			return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
+		}
     }
 }

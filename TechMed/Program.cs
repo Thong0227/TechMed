@@ -1,13 +1,27 @@
 using Microsoft.EntityFrameworkCore;
 using TechMed.Areas.Admin.Data;
+using Microsoft.AspNetCore.Identity;
+using TechMed.Data;
+using TechMed.Service;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 var settings = builder.Configuration
                 .GetRequiredSection("ConnectionStrings"); //read data from appsettings.json
 builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseSqlServer(settings["AppDbContext"]));
+
+builder.Services.AddDbContext<TechMedContext>(options =>
+    options.UseSqlServer(settings["AppDbContext"]));
+
+builder.Services.AddDefaultIdentity<TechMed.Areas.Identity.Data.TechMedUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<TechMedContext>();
+builder.Services.AddScoped<MenuService>();
+builder.Services.AddScoped<NewsService>();
+builder.Services.AddScoped<TagService>();
+builder.Services.AddScoped<BannerService>();
+builder.Services.AddScoped<RecruitmentService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -24,8 +38,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();;
 
 app.UseAuthorization();
+
 
 app.UseEndpoints(endpoints =>
 {
@@ -38,5 +54,5 @@ app.UseEndpoints(endpoints =>
     pattern: "{controller=Home}/{action=Index}/{id?}");
 });
 
-
+app.MapRazorPages();
 app.Run();

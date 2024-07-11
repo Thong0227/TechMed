@@ -1,0 +1,104 @@
+﻿<style>
+	.imgThumbnail {
+		display: inline-block;
+		margin-right: 20px;
+		position: relative;
+	}
+
+		.imgThumbnail:hover {
+			cursor: pointer;
+		}
+
+			.imgThumbnail:hover .btnDelete {
+				display: block;
+			}
+
+	/* Thiết lập nút xóa */
+	.btnDelete {
+		display: none;
+		position: absolute;
+		top: 0;
+		right: 0;
+		background-color: red;
+		color: white;
+		border: none;
+		padding: 5px;
+		cursor: pointer;
+	}
+
+	.sidebar {
+		display: none !important;
+	}
+
+	.content {
+		margin-left: 30px;
+	}
+</style>
+
+<div id="browserFile">
+	@if (ViewBag.fileInfor != null)
+	{
+		@foreach (var item in ViewBag.fileInfor)
+		{
+			<div class="imgThumbnail">
+				<img src="~/Upload/CKFile/@item.Name" width="100%" height="140" />
+				<button data-bs-toggle="modal" data-bs-target="#deleteModal" data-src="@item.Name" class="btnDelete">Xóa</button>
+				<p>@item.Name</p>
+			</div>
+		}
+	}
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Xác nhận xóa ?</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-warning" role="alert">
+					Bạn có chắc chắn muốn xóa: Ảnh trong thư viện
+				</div>
+			</div>
+			<div class="modal-footer">
+				<form>
+					<input type="hidden" name="Id" class="nameElement" />
+					<input type="submit" value="Xóa" class="btn btn-danger" />
+					<input type="button" value="không" class="btn btn-secondary" data-bs-dismiss="modal" />
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="~/lib/ckeditor/ckeditor.js"></script>
+<script>
+	$(document).ready(function () {
+		var funcNum = @(Context.Request.Query["CKEditorFuncNum"] + ";");
+		$('#browserFile').on('click', '.imgThumbnail img', function () {
+			var fileUrl = $(this).attr('src');
+			window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
+			window.close();
+		});
+	})
+	$(document).on("click", ".btnDelete", function () {
+		var itemSrc = $(this).data('src');
+		$(".modal-footer .nameElement").val(itemSrc);
+	});
+	$('#deleteModal').on('click', '.btn-danger', function (e) {
+		var imageName = $(this).closest('.modal-footer').find('.nameElement').val();
+		$.ajax({
+			url: '/Admin/HandleFileUpload/DeleteFile',
+			type: 'POST',
+			data: { fileUrl: imageName },
+			success: function (response) {
+				console.log(response);
+				window.location.reload();
+			},
+			error: function (xhr, status, error) {
+				console.error(xhr.responseText);
+			}
+		});
+	});
+
+</script>

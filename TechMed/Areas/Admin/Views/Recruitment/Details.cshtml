@@ -14,14 +14,20 @@
     <h4>Content: @Html.DisplayFor(model => model.Content)</h4>
     <h4>Deadline: @Html.DisplayFor(model => model.Deadline)</h4>
     <h4>Quantity: @Html.DisplayFor(model => model.Quantity)</h4>
-    <h4>Recruitment Category: @Html.DisplayFor(model => model.RecruitmentCate.Name)</h4>
+    @if (Model.RecruitmentCate != null){
+        <h4>Recruitment Category: @Html.DisplayFor(model => model.RecruitmentCate.Name)</h4>
+    }
 </div>
 
 <div>
     <h4>Tags:</h4>
-    @foreach (var tag in Model.RecruitmentTags.Select(rt => rt.Tag))
+    @if (Model.RecruitmentTags != null)
     {
-        <span>@tag.Name</span>
+        @foreach (var tag in Model.RecruitmentTags.Select(rt => rt.Tag))
+        {
+            <span>@tag.Name</span>
+            <span>@tag.Id</span>
+        }
     }
 </div>
 

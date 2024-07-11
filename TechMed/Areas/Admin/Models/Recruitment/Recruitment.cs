@@ -25,8 +25,21 @@ namespace TechMed.Areas.Admin.Models.Recruitment
 
         [StringLength(50, ErrorMessage = "Số lượng không quá 50 kí tự")]
         public string? Quantity { get; set; }
+        public string? Image { get; set; }
+		
+		public DateTime CreatedDate { get; set; }
 
-        public Guid? RecruitmentCateId { get; set; }
+        [Required(ErrorMessage = "Start Date is required")]
+		
+		public DateTime StartDate { get; set; }
+		
+		public DateTime? EndDate { get; set; }
+
+        public int Status { get; set; }
+
+		public int? Order { get; set; }
+		public int? Type { get; set; }
+		public Guid? RecruitmentCateId { get; set; }
         public RecruitmentCate? RecruitmentCate { get; set; }
 
         public ICollection<RecruitmentTag>? RecruitmentTags { get; set; }

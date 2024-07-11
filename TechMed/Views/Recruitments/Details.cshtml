@@ -1,61 +1,179 @@
 ﻿@model TechMed.Areas.Admin.Models.Recruitment.Recruitment
+@inject TechMed.Service.RecruitmentService RecruitmentService;
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var recruitmentRelates = RecruitmentService.GetRelateRecruitments(Model.RecruitmentCateId, 3);
 }
-
-<h1>Details</h1>
-
-<div>
-    <h4>Recruitment</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Salary)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Salary)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Deadline)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Deadline)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Quantity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Quantity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RecruitmentCate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RecruitmentCate.Name)
-        </dd>
-    </dl>
+<style>
+    .article-content ul {
+        list-style: unset;
+    }
+</style>
+<div class="breadcrumb_background">
+    <span class="overlay"></span>
+    <div class="title_full">
+        <div class="container a-center">
+            <h1 class="title_page">Văn hoá doanh nghiệp</h1>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<section class="bread-crumb">
+    <span class="crumb-border"></span>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 a-left">
+                <ul class="breadcrumb">
+                    <li class="home">
+                        <a href="/">
+                            <span>Trang chủ</span>
+                        </a>
+                        <span class="mr_lr">
+                            &nbsp;<i class="fa fa-angle-right"></i>
+                            &nbsp;
+                        </span>
+                    </li>
+                    <li>
+                        <a href="/News">
+                            <span>Tin tức</span>
+                        </a>
+                        <span class="mr_lr">
+                            &nbsp;<i class="fa fa-angle-right"></i>
+                            &nbsp;
+                        </span>
+                    </li>
+                    <li>
+                        <strong>
+                            <span>@Html.DisplayFor(model => model.Name)</span>
+                        </strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="blogpage">
+	<div class="container article-wraper" itemscope>
+		<meta itemprop="description" content="">
+		<meta itemprop="author" content="">
+		<meta itemprop="headline" content="@Html.DisplayFor(model => model.Name)">
+		<div class="wrap_background_aside padding-top-0 margin-bottom-40">
+			<div class="row">
+				<section class="right-content col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<article class="article-main">
+						<div class="row">
+							<partial name="_SidebarPartial" model="Model" />
+                            <input type="hidden" id="productId" value="@Html.DisplayFor(model => model.Id)" />
+                            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 article-content">
+                                <h2 class="productName">@Html.DisplayFor(model => model.Name)</h2>
+								@Html.Raw(Model?.Content)
+                                <div class="share_social section ">
+                                    <div class="section margin-bottom-15 tags-list">
+                                        <span>Tags:</span>
+                                        @if (Model.RecruitmentTags != null)
+                                        {
+                                            @foreach (var tag in Model.RecruitmentTags.Select(rt => rt.Tag))
+                                            {
+                                                <div class="tag_list">
+                                                    <a href="//tags/tagrelate?id=@tag.Id">#@tag.Name</a>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                    <div class="social-sharing">
+                                        <div class="social-media">
+                                            <label>Chia sẻ: </label>
+                                            <a target="_blank"
+                                               href=""
+                                               class="share-facebook" title="Chia sẻ lên Facebook">
+                                                <i class="fab fa-facebook"></i>
+                                            </a>
+                                            <a target="_blank" href="" class="share-twitter" title="Chia sẻ lên Twitter">
+                                                <i class="fab fa-twitter"></i>
+                                            </a>
+                                            <a target="_blank"
+                                               href=""
+                                               class="share-pinterest" title="Chia sẻ lên pinterest">
+                                                <i class="fab fa-pinterest"></i>
+                                            </a>
+                                            <a target="_blank"
+                                               href=""
+                                               class="share-google" title="+1">
+                                                <i class="fab fa-google"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    @if (RecruitmentService != null)
+                                    {
+                                        @if (recruitmentRelates != null)
+                                        {
+                                            <div class="blog_recent">
+                                                <div class="title_recent">
+                                                    <h2 class="module-title title-head heading-title">
+                                                        <a href="tuyen-dung" title="Tin tức liên quan">Tin tức liên quan</a>
+                                                    </h2>
+                                                </div>
+                                                <div class="slickrecent sectio row">
+                                                    @foreach (var item in recruitmentRelates)
+                                                    {
+                                                        <div class="item col-lg-4 col-12">
+                                                            <div class="article-thumbnail">
+                                                                <a asp-controller="Recruitments" asp-action="Details" class="image-blog" 
+                                                                asp-route-id="@item.Id" title="@item.Name">
+                                                                    <img class="lazyload"
+                                                                         src="@item.Image"
+                                                                         alt="@item.Name">
+                                                                </a>
+                                                            </div>
+                                                            <div class="article-info">
+                                                                <h3 class="article-title">
+                                                                    <a asp-controller="Recruitments" asp-action="Details" class="image-blog"
+                                                                       asp-route-id="@item.Id" title="@item.Name">
+                                                                        <span>@item.Name</span>
+                                                                    </a>
+                                                                </h3>
+                                                                <div class="article-post">
+                                                                    @item.StartDate
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    }
+                                                </div>
+                                            </div>
+
+                                        }
+                                    }
+                                </div>
+							</div>
+						</div>
+					</article>
+				</section>
+			</div>
+		</div>
+	</div>
+</section>
+<script type="text/javascript">
+    $(document).ready(function ($) {
+        var product = {
+            id: $('#productId').val(),
+            name: $('.productName').html(),
+        };
+        addToViewedProducts(product);
+    });
+    function addToViewedProducts(product) {
+        // Lấy danh sách đã xem từ local storage (nếu có)
+        let viewedProducts = JSON.parse(localStorage.getItem('viewedProducts')) || [];
+
+        // Kiểm tra xem sản phẩm đã tồn tại trong danh sách chưa
+        if (!viewedProducts.some(p => p.id === product.id)) {
+            // Nếu chưa tồn tại, thêm sản phẩm vào danh sách
+            viewedProducts.push(product);
+
+            // Lưu danh sách đã xem vào local storage
+            localStorage.setItem('viewedProducts', JSON.stringify(viewedProducts));
+        }
+    }
+</script>

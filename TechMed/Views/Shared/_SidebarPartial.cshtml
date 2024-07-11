@@ -1,0 +1,83 @@
+﻿@inject TechMed.Service.MenuService MenuService;
+@inject TechMed.Service.NewsService NewsService;
+@inject TechMed.Service.TagService TagService;
+
+<div class="left-content col-lg-3 col-md-12 col-sm-12 col-xs-12">
+	<aside class="aside-item blog-sidebar sidebar-category collection-category margin-bottom-20">
+		<div class="aside-title">
+			<h2 class="title-head margin-top-0 cate">
+				<span>Về TechMedCom</span>
+			</h2>
+		</div>
+		<div class="aside-content">
+			<nav class="nav-category navbar-toggleable-md">
+				@if (MenuService != null && MenuService.GetMenus() != null)
+				{
+					<ul class="nav navbar-pills">
+						@foreach (var menu in MenuService.GetMenus())
+						{
+							<li class="nav-item"><a class="nav-link" href="@menu.Link">@menu.Name</a></li>
+						}
+					</ul>
+				}
+			</nav>
+		</div>
+	</aside>
+	<div class="blogbar sidebarblog section margin-bottom-20">
+		<div class="title_module">
+			<h2>
+				<a href="" title="Tin tức mới nhất">
+					Tin tức mới
+					nhất
+				</a>
+			</h2>
+		</div>
+		<div class="section">
+			@if (NewsService != null)
+			{
+				@foreach (var item in NewsService.GetLastNews())
+				{
+					<div class="blogitem">
+						<div class="blog-left">
+							<a asp-action="Details" asp-route-id="@item.Id">
+								<img class="lazyload"
+									 src="@item.Image"
+									 title="@item.Title"
+									 alt="@item.Title">
+							</a>
+						</div>
+						<div class="blog-right">
+							<h3>
+								<a asp-action="Details" asp-route-id="@item.Id" title="@item.Title">
+									@item.Title
+								</a>
+							</h3>
+							<span>11/22/2023 14:22:57</span>
+						</div>
+					</div>
+				}
+			}
+		</div>
+	</div>
+	<div class="aside-item blog_tags">
+		<div class="aside-title">
+			<h2 class="title-head">
+				<span>Tags</span>
+			</h2>
+		</div>
+		<div class="module-content">
+			@if (TagService != null)
+			{
+				@foreach (var item in TagService.GetListTags())
+				{
+					<div class="tags-list">
+						<div class="tag_list">
+							<a href="/tags/tagrelate?id=@item.Id" class="btn-transition"
+							   title="amerigroup">#@item.Name</a>
+						</div>
+					</div>
+				}
+			}
+		</div>
+	</div>
+</div>

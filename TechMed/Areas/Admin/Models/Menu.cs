@@ -14,6 +14,9 @@ namespace TechMed.Areas.Admin.Models
 
         public int? Order { get; set; }
 
+        public string? Link { get; set; }
         public int? Status { get; set; }
+
+        public Guid? ParentId { get; set; }
     }
 }

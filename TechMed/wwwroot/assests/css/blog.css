@@ -1,0 +1,329 @@
+.banner_career {
+    position: relative;
+
+}
+
+.banner_career > img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.banner_career .content {
+    position: absolute;
+    top: 0;
+    color: #fff;
+    padding: 50px 20px
+}
+
+@media (max-width: 1199px) {
+    .banner_career .content {
+        padding:27px 20px
+    }
+}
+
+@media (max-width: 991px) {
+    .banner_career .content {
+        display:none
+    }
+}
+
+.banner_career .content .title {
+    font-size: 40px;
+    line-height: 50px;
+    width: 25%
+}
+
+@media (max-width: 1199px) {
+    .banner_career .content .title {
+        font-size:30px;
+        width: 40%
+    }
+}
+
+.banner_career .content .description {
+    font-size: 17px;
+    width: 30%
+}
+
+@media (max-width: 1199px) {
+    .banner_career .content .description {
+        font-size:15px;
+        width: 40%
+    }
+}
+
+.listmain_blog {
+    margin-top: 40px
+}
+
+.table-fill {
+    width: 100%;
+    min-width: 1000px
+}
+
+.table-fill thead {
+    border-bottom: 1px solid #454545;
+    font-weight: 300
+}
+
+.table-fill thead th {
+    border: none;
+    font-weight: 700;
+    color: #333;
+    font-size: 16px;
+    padding: 5px;
+    text-align: left
+}
+
+@media (max-width: 767px) {
+    .table-fill thead th.sh-name {
+        width:200px
+    }
+}
+
+.table-fill tbody td {
+    border: none;
+    padding: 15px 5px;
+    font-size: 1rem
+}
+
+.table-fill tbody td .btn {
+    /* background-color: #80b541; */
+    border: 1px solid #80b541;
+    background-color: #80b541;
+    width: 120px;
+    border-radius: 0;
+    display: inline-flex;
+    justify-content: space-evenly;
+    align-items: center;
+    color: #fff;
+    padding: 5px 12px;
+    height: 36px;
+    width: 100%;
+    font-size: 14px;
+    text-align: center
+}
+
+.table-fill tbody td .btn:focus {
+    box-shadow: none
+}
+
+.table-fill tbody td .btn:hover {
+    background-color: #272727;
+    border-color: #272727
+}
+
+.table-fill tbody td .btn.active {
+    box-shadow: none
+}
+
+.table-fill tbody td .dropdown-toggle::after {
+    visibility: hidden
+}
+
+.table-fill tbody tr {
+    border-bottom: 1px solid #f1f1f1
+}
+
+.table-fill tbody tr:hover .sh-jobtitle span {
+    visibility: visible;
+    opacity: 1
+}
+
+.table-fill tbody td.sh-docname {
+    font-weight: 500
+}
+
+.table-fill .sh-jobtitle span {
+    color: #e40000;
+    font-size: 0.85rem;
+    visibility: hidden;
+    opacity: 0
+}
+
+.sh-jobname a {
+    font-weight: 700;
+    text-transform: uppercase
+}
+
+.sh-group,.sh-sizes {
+    text-transform: uppercase;
+    font-weight: 700
+}
+
+.sh-size {
+    max-width: 150px
+}
+
+.sh-download {
+    max-width: 80px;
+    text-align: center
+}
+
+.time_user {
+    display: flex;
+    align-items: center
+}
+
+.time_user p {
+    font-size: 15px;
+    margin: 10px 0
+}
+
+.time_user p.time {
+    margin-right: 10px
+}
+
+.nav_pagi {
+    width: 100%
+}
+
+.nav_pagi .pagination {
+    float: none;
+    justify-content: center
+}
+
+.tab_blog {
+    background: #f0f2f2;
+    clear: both;
+    padding: 15px 0
+}
+
+.tab_blog .tab-ul ul {
+    padding: 0;
+    border-bottom: 1px solid #cfcfcf
+}
+
+.tab_blog .tab-ul ul li {
+    color: #80b541;
+    font-size: 16px;
+    padding: 5px 10px;
+    font-weight: 700;
+    margin-bottom: -1px;
+    border-bottom: 2px solid transparent
+}
+
+.tab_blog .tab-ul ul li.active {
+    border-bottom: 2px solid #80b541
+}
+
+.tab_blog .tab-content.active {
+    opacity: 1;
+    visibility: visible;
+    height: auto
+}
+
+.tab_blog .tab-content .item {
+    display: block;
+    font-weight: 700;
+    margin: 30px 10px 20px 0;
+    padding: 20px 20px;
+    border-left: 20px solid #192c57;
+    border-right: 1px solid #a1a3a6;
+    border-top: 1px solid #a1a3a6;
+    border-bottom: 1px solid #a1a3a6;
+    height: 150px;
+    background-color: #fff;
+    transition: all 0.3s ease-out
+}
+
+.blog_moitruong {
+    position: relative;
+    padding: 50px 0
+}
+
+.blog_moitruong .title {
+    text-align: center;
+    color: #192c57;
+    text-transform: uppercase;
+    font-size: 30px
+}
+
+.blog_moitruong .item {
+    padding: 30px 22px
+}
+
+.blog_moitruong .item .img img {
+    width: 100%
+}
+
+.blog_moitruong .item .title {
+    padding: 10px 0;
+    text-align: start
+}
+
+.blog_moitruong .item .description {
+    font-size: 17px;
+    color: #192c57;
+    word-break: break-all
+}
+
+.blog_moitruong .item .content {
+    padding: 10px 20px;
+    background-repeat: no-repeat;
+    background-size: cover
+}
+
+.blog_moitruong .item-1 .img img {
+    -ms-transform: rotate(358deg);
+    transform: rotate(358deg)
+}
+
+.blog_moitruong .item-2 .img img {
+    -ms-transform: rotate(362deg) translateX(11px);
+    transform: rotate(362deg) translateX(11px)
+}
+
+.blog_moitruong .item-3 .img img {
+    -ms-transform: rotate(363deg);
+    transform: rotate(363deg)
+}
+
+.blog_moitruong .item {
+    transition: all 0.3s ease-out
+}
+
+.blog_moitruong .item:hover {
+    transform: translate(0, 65px)
+}
+
+.blog_moitruong .item-1 .content {
+    background-image: url(//bizweb.dktcdn.net/100/474/205/themes/928207/assets/bg_mt1.jpg?1699518622239)
+}
+
+.blog_moitruong .item-2 .content {
+    background-image: url(//bizweb.dktcdn.net/100/474/205/themes/928207/assets/bg_mt2.jpg?1699518622239)
+}
+
+.blog_moitruong .item-3 .content {
+    background-image: url(//bizweb.dktcdn.net/100/474/205/themes/928207/assets/bg_mt3.jpg?1699518622239)
+}
+
+.blog_moitruong .btn-enviroment {
+    background-color: #192c57;
+    padding: 5px 20px;
+    margin: 10px 0;
+    color: #fff;
+    width: 60%;
+    text-align: start
+}
+
+.blog_moitruong .btn-enviroment i {
+    text-align: right
+}
+
+.btn-enviroment:hover {
+    background-color: #e2ab21
+}
+
+.share .btn-sm {
+    margin-right: 5px
+}
+
+.share .title {
+    padding: 10px 0
+}
+
+.share .btn:hover {
+    color: #fff
+}

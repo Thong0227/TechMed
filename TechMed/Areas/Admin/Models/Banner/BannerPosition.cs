@@ -15,7 +15,6 @@ namespace TechMed.Areas.Admin.Models.Banner
         [Required(ErrorMessage = "Vui lòng nhập mã vị trí.")]
         public string Code { get; set; } = "";
 
-        [Required(ErrorMessage = "Vui lòng nhập mô tả.")]
         public string? Description { get; set; }
 
         public List<Banner>? Banners { get; set; }

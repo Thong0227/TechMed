@@ -1,36 +1,90 @@
-﻿@model IEnumerable<TechMed.Areas.Admin.Models.Recruitment.RecruitmentCate>
-
+﻿@model X.PagedList.IPagedList<TechMed.Areas.Admin.Models.Recruitment.RecruitmentCate>
+@using X.PagedList.Mvc.Core
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "Index";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Danh mục tuyển dụng</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="searchInner">
+	<form method="post">
+		<div class="row">
+			<div class="searchField col-md-4 col-6">
+				<input class="form-control" type="text" name="keyword" value="@ViewBag.keyword" placeholder="Search content here..." />
+			</div>
+
+			<div class="btnFilter col-md col-12">
+				<input type="submit" value="Tìm kiếm" class="btn" />
+			</div>
+		</div>
+	</form>
+</div>
+
+<div class="d-flex justify-content-between align-items-center button-header">
+	<a class="btn btn-success btnCreateNew" asp-action="Create">Tạo mới</a>
+	@Html.PagedListPager(Model, page => Url.Action("Index", "RecruitmentCates", new { page = page }))
+</div>
+
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
+	<thead>
+		<tr>
+			<th>
+				Tên
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td>
+					<div class="dropdown">
+						<a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+							<i class="fa-solid fa-bars text-secondary"></i>
+						</a>
+
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pencil"></i> Sửa</a></li>
+							<li data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id" class="btnDelete">
+								<a href="javascript:void(0)" class="dropdown-item"><i class="fa-solid fa-trash-can text-danger"></i> Xóa</a>
+							</li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Xác nhận xóa ?</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-warning" role="alert">
+					Bạn có chắc chắn muốn xóa: Danh mục tuyển dụng
+				</div>
+			</div>
+			<div class="modal-footer">
+				<form asp-action="Delete">
+					<input type="hidden" name="Id" class="idElement" />
+					<input type="submit" value="Xóa" class="btn btn-danger" />
+					<input type="button" value="không" class="btn btn-secondary" data-bs-dismiss="modal" />
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).on("click", ".btnDelete", function () {
+		var itemId = $(this).data('id');
+		$(".modal-footer .idElement").val(itemId);
+	});
+</script>
