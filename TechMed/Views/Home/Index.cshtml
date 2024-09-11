@@ -6,6 +6,7 @@
 	var bannerSection2 = BannerService.GetBannerByPositionCode("BANNER_SECTION2");
 	var bannerSection3 = BannerService.GetBannerByPositionCode("BANNER_SECTION3");
 	var bannerSection4 = BannerService.GetBannerByPositionCode("BANNER_SECTION4");
+	var bannerLastIndex = BannerService.GetBannerByPositionCode("BANNER_LAST_INDEX");
 	var homeNews = NewsService.GetHomeNews();
 	var hotNews = NewsService.GetHotNews(2);
 }
@@ -237,8 +238,8 @@
 							</div>
 						</div>
 					}
-					@if (hotNews != null)
-					{
+					@* @if (hotNews != null)
+					{ tạm comment nếu khách dùng tin tức lại thay
 						<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sl-left">
 							<div class="row">
 								@foreach (var news in hotNews)
@@ -267,6 +268,23 @@
 								}
 							</div>
 						</div>
+					} *@
+					@if (BannerService != null)
+					{
+						@if (bannerLastIndex != null)
+						{
+							<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 sl-left">
+								@foreach (var banner in bannerLastIndex)
+								{
+									<a href="@banner.Link">
+										<img class="lazyload"
+											 src="@banner.ImageUrl"
+											 alt="@banner.Name" />
+									</a>
+								}
+							</div>
+							
+						}
 					}
 				</div>
 			</div>
